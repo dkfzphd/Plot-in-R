@@ -1,0 +1,50 @@
+---
+title: "dumbbell plot"
+author: "ManBuXiaoCu"
+date: '2022-03-10'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The document was compiled at **`r Sys.time()`**
+```{r set language into English}
+# Set R warning() in English
+Sys.setenv(LANG = "en")
+```
+
+```{r load library and data}
+library(tidyverse)
+theme_set(theme_bw())
+gapminder <- read_csv("https://raw.githubusercontent.com/datavizpyr/data/master/gapminder-FiveYearData.csv")
+head(gapminder)
+```
+
+```{r}
+df <- gapminder %>%
+  filter(year %in% c(1952, 2007)) %>%
+  filter(continent == "Asia")
+
+df <- df %>%
+  mutate(
+    paired = rep(1:(n() / 2), each = 2),
+    year = factor(year)
+  )
+
+df %>%
+  ggplot(aes(x = lifeExp, y = country)) +
+  geom_line(aes(group = paired), lwd = 1.5, color = "grey70") +
+  geom_point(aes(color = year), size = 3) +
+  theme(legend.position = "top")
+```
+
+
+```{r package related}
+
+# Show all the package version and System information
+sessionInfo()
+```
