@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+author: "ManBuXiaoCu"
+date: '2022-03-14'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggsci)
+library(ggpubr)
+
+```
+
+
+scale_fill_manual should place in front of geom_point otherwise will not work
+```{r}
+ggplot(ToothGrowth, aes(x = as.factor(dose), y = len))+
+  geom_violin(aes(fill = supp),position = position_dodge(0.9))+
+  scale_fill_manual(values = c("blue", "red"))+
+  geom_point(aes(fill = supp),position = position_dodge(0.9))
+```
+
+boxplot with another pair of color
+```{r}
+ggplot(ToothGrowth, aes(x = as.factor(dose), y = len))+
+  geom_boxplot(aes(fill = supp),position = position_dodge(0.9))+
+  scale_fill_manual(values = c("Steelblue1", "brown1"))+
+  geom_point(aes(fill = supp),position = position_dodge(0.9))+
+  theme_pubr()
+```
+
+boxplot with another pair of color and change the boxplot width into 0.4
+```{r}
+ggplot(ToothGrowth, aes(x = as.factor(dose), y = len))+
+  geom_boxplot(aes(fill = supp),position = position_dodge(0.9),width=0.4)+
+  scale_fill_brewer(palette = "Set1")+
+  geom_point(aes(fill = supp),position = position_dodge(0.9))+
+  theme_pubr()
+```
+
