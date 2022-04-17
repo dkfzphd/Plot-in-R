@@ -1,0 +1,156 @@
+---
+title: "biology-plot"
+author: "ManBuXiaoCu"
+date: '2022-03-18'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library(ggsci)
+data("ToothGrowth")
+tail(ToothGrowth)
+```
+
+```{r}
+dat1 <- ToothGrowth %>%
+  group_by(supp, dose) %>%
+  summarise(
+    mean_len = mean(len),
+    sd_value = sd(len)
+  ) %>%
+  mutate()
+dat1
+```
+
+```{r}
+p0 <- ggplot(dat1, aes(x = as.factor(dose), y = mean_len, fill = supp)) +
+  geom_col(position = position_dodge(.9), width = .9) +
+  geom_errorbar(aes(
+    ymin = mean_len - sd_value,
+    ymax = mean_len + sd_value
+  ),
+  position = position_dodge(.9),
+  width = .2
+  ) +
+  geom_point(
+    data = ToothGrowth,
+    aes(
+      x = as.factor(dose),
+      y = len, group = supp
+    ),
+    position = position_dodge(.9)
+  ) +
+  labs(
+    x = "Dose",
+    y = "Length (mm)"
+  ) +
+  scale_fill_aaas() +
+  theme_classic()
+p0
+```
+
+```{r}
+p00 <- p0+theme(
+  legend.position = c(.15, .8),
+  legend.background = element_rect(fill = "transparent"),
+  legend.title = element_blank()
+)
+p00
+```
+
+
+```{r}
+p1 <- ggplot(dat1, aes(x = as.factor(dose), y = mean_len, fill = supp)) +
+  geom_col(position = position_dodge(.5), width = .4) +
+  geom_errorbar(aes(
+    ymin = mean_len - sd_value,
+    ymax = mean_len + sd_value
+  ),
+  position = position_dodge(.5),
+  width = .2
+  ) +
+  geom_point(
+    data = ToothGrowth,
+    aes(
+      x = as.factor(dose),
+      y = len, group = supp
+    ),
+    position = position_dodge(.5)
+  ) +
+  labs(
+    x = "Dose",
+    y = "Length (mm)"
+  ) +
+  scale_fill_aaas() +
+  theme_classic()
+p1
+
+p2 <- p1 + theme(
+  legend.position = c(.15, .8),
+  legend.background = element_rect(fill = "transparent"),
+  legend.title = element_blank()
+)
+
+p2
+
+p3 <- p2+theme_pubr()
+p4 <- p0+theme_pubr()
+```
+
+
+```{r}
+p4+theme(legend.key.size = unit(1, 'cm'),
+         legend.position = c(.15, .8),
+         legend.title = element_blank())
+```
+
+
+FINAL VERSION
+```{r}
+p0 <- ggplot(dat1, aes(x = as.factor(dose), y = mean_len, fill = supp)) +
+  geom_col(position = position_dodge(.9), width = .9) +
+  geom_errorbar(aes(
+    ymin = mean_len - sd_value,
+    ymax = mean_len + sd_value
+  ),
+  position = position_dodge(.9),
+  width = .2
+  ) +
+  geom_point(
+    data = ToothGrowth,
+    aes(
+      x = as.factor(dose),
+      y = len, group = supp
+    ),
+    position = position_dodge(.9)
+  ) +
+  labs(
+    x = "Dose",
+    y = "Length (mm)"
+  ) +
+  scale_fill_aaas() +
+  theme_classic()
+p0
+
+plot <- p0+theme_pubr()+
+  theme(legend.key.size = unit(1, 'cm'),
+         legend.position = c(.15, .8),
+         legend.title = element_blank())
+
+```
+
+```{r}
+library(patchwork)
+p0 + p00+ p1 + p2 + 
+p3 + p4 + plot +plot_annotation(tag_levels = 'A')+plot_layout(nrow = 4, byrow = TRUE)
+  
+```
+
