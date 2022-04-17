@@ -1,0 +1,106 @@
+---
+title: "Untitled"
+author: "ManBuXiaoCu"
+date: '2022-04-17'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+library(igraph)
+plot(graph_from_literal(c--h,h--a,a--o,o--s))
+
+tr <- make_tree(40, children = 5, mode = "undirected")
+
+plot(tr, vertex.size=10, vertex.label=NA) 
+
+
+er <- sample_gnm(n=50, m=10) ####can also use erdos.renyi.game
+## options include directed= and loops=
+plot(er, vertex.size=6, vertex.label=NA)
+
+set.seed(1)
+kite <- make_empty_graph(directed = TRUE) + 
+  edges('C','H', 'A','O', 'S','D', 'D','E', 'E','G', 'F','G', 'G','H', 'H','I', 'I','J')
+plot(kite,vertex.size=12)
+
+g <- make_graph('Diamond')
+g2 <- set_vertex_attr(g, 'name', value = LETTERS[1:4])
+g3 <- set_graph_attr(g2, 'layout', layout_with_fr)
+plot(g3)
+
+
+library(igraph)
+library(igraphdata)
+data(macaque)
+macaque
+plot(macaque)
+gorder(macaque)
+gsize(macaque)
+V(macaque)
+E(macaque)
+
+
+# graph from literal undirect
+t1 <- graph_from_literal(1--2,3--4,2--3,2--5)
+t1
+plot(t1)
+
+# vertex size
+gorder(t1)
+V(t1)
+
+# edges
+gsize(t1)
+E(t1)
+
+
+# graph from literal direct
+t2 <- graph_from_literal(1--+2,3+--4,2+--3,2--+5)
+t2
+plot(t2)
+# vertex size
+gorder(t2)
+V(t2)
+
+# edges
+gsize(t2)
+E(t2)
+
+# ambiguous with undirect graph
+library(tidyverse)
+t1 %>% head_of('1|2')
+t1 %>% tail_of('1|2')
+
+
+# not ambiguous with undirect graph
+library(tidyverse)
+t2 %>% head_of('1|2')
+t2 %>% tail_of('1|2')
+# direct graph find in and out neighbors
+t2 %>% neighbors('2', mode = "out")
+t2 %>% neighbors('2', mode = "in")
+
+V(t2)[c('1', '2', '5', '4')]
+E(t2,path = c('1', '2', '5'))
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
