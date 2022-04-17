@@ -1,0 +1,77 @@
+---
+title: "Barplot change order"
+author: "ManBuXiaoCu"
+date: '2022-03-14'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+boot_samp <- rsample::bootstraps(mtcars, times = 3)
+```
+
+```{r}
+library(tidyverse)
+
+data(crickets, package = "modeldata")
+names(crickets)
+
+# Plot the temperature on the x-axis, the chirp rate on the y-axis. The plot
+# elements will be colored differently for each species:
+ggplot(crickets, 
+       aes(x = temp, y = rate, color = species, pch = species, lty = species)) + 
+  # Plot points for each data point and color by species
+  geom_point(size = 2) + 
+  # Show a simple linear model fit created separately for each species:
+  geom_smooth(method = lm, se = FALSE, alpha = 0.5) + 
+  labs(x = "Temperature (C)", y = "Chirp Rate (per minute)")+
+  theme_classic()
+```
+
+```{r}
+plot(ToothGrowth)
+
+```
+
+OJ comes first by default
+```{r}
+ 
+ggplot(ToothGrowth, aes(x = as.factor(dose),y = len, fill=supp))+
+  geom_bar(stat = "identity",position = "dodge")
+```
+
+How to change the VC OJ order
+```{r}
+df2 <- ToothGrowth
+df2$supp <- factor(df2$supp,levels = c("VC","OJ")) 
+ggplot(df2, aes(x = as.factor(dose),y = len, fill=supp))+
+  geom_bar(stat = "identity",position = "dodge")
+```
+
+dodge2 barplot each variable has its own bar
+```{r}
+ggplot(df2, aes(x = as.factor(dose),y = len, fill=supp))+
+  geom_bar(stat = "identity",position = "dodge2")
+```
+
+change a theme
+```{r}
+ggplot(df2, aes(x = as.factor(dose),y = len, fill=supp))+
+  geom_bar(stat = "identity",position = "dodge",width = .45)+
+  geom_jitter(position = position_dodge(.45))+
+  ggpubr::theme_pubr()
+```
+
+violin plot
+```{r}
+ggplot(df2, aes(x = as.factor(dose),y = len, fill=supp))+
+  geom_violin()+
+  geom_jitter(position = position_dodge(.9))+
+  ggpubr::theme_pubr()
+```
+
