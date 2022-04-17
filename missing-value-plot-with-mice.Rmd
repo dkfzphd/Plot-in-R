@@ -1,0 +1,38 @@
+---
+title: "missing data"
+author: "ManBuXiaoCu"
+date: '2022-03-17'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load packages
+library(mice)
+library(ggplot2)
+library(ggmice)
+
+# load incomplete dataset 
+dat <- boys
+
+# generate imputations
+imp <- mice(dat, method = "pmm", printFlag = FALSE)
+```
+
+```{r}
+# create missing data pattern plot
+plot_pattern(dat)
+```
+
+```{r}
+
+# specify optional arguments  
+plot_pattern(dat, square = TRUE, rotate = TRUE)
+```
+
+
